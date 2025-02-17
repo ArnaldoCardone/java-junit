@@ -27,4 +27,16 @@ public class AccountTests {
         //Valida se o depoisto com valor negativo não foi efetuado, mantendo o saldo inicial
         Assertions.assertEquals(expectedValue, account.getBalance() );
     }
+
+    @Test
+    public void fullWithdrawShoudClearBalanceAndReturnFullBalance() {
+        double amount = 200.00;
+        double expectedValue = 0.0;
+        Account account = AccountFactory.createAccount(amount);
+        double result = account.fullWithdraw(amount);
+        //Verifica se todo o saldo foi retirado e o saldo ficou zerado
+        Assertions.assertTrue(expectedValue == account.getBalance());
+        //Verifica se  o valor retirado é igual ao valor criado
+        Assertions.assertEquals(amount, result);
+    }
 }
