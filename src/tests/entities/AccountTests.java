@@ -8,7 +8,7 @@ import tests.factory.AccountFactory;
 public class AccountTests {
 
     @Test
-    public void depositShoudIncreaseBalanceWhenPositiveAmount() {
+    public void depositShouldIncreaseBalanceWhenPositiveAmount() {
         double amount = 200.00;
         double expectedValue = 196.00;
 
@@ -19,7 +19,7 @@ public class AccountTests {
     }
 
     @Test
-    public void depositShoudNotIncreaseBalanceWhenNegativeAmount() {
+    public void depositShouldNotIncreaseBalanceWhenNegativeAmount() {
         double amount = -200.00;
         double expectedValue = 100.0;
         Account account = AccountFactory.createAccount(expectedValue);
@@ -29,7 +29,7 @@ public class AccountTests {
     }
 
     @Test
-    public void fullWithdrawShoudClearBalanceAndReturnFullBalance() {
+    public void fullWithdrawShouldClearBalanceAndReturnFullBalance() {
         double amount = 200.00;
         double expectedValue = 0.0;
         Account account = AccountFactory.createAccount(amount);
@@ -38,5 +38,28 @@ public class AccountTests {
         Assertions.assertTrue(expectedValue == account.getBalance());
         //Verifica se  o valor retirado é igual ao valor criado
         Assertions.assertEquals(amount, result);
+    }
+
+    @Test
+    public void witdrawShouldDescreseBalanceWhenSufficientBalance(){
+        double amount = 800.00;
+        double expectedValue = 300.0;
+        Account account = AccountFactory.createAccount(amount);
+        account.withdraw(500.00);
+        //Valida se o valor do saldo ficará correto após o saque
+        Assertions.assertEquals(expectedValue, account.getBalance());
+    }
+
+    @Test
+    public void witdrawShouldThrowExceptionWhenInsufficientBalance(){
+        double amount = 300.00;
+        double expectedValue = 300.0;
+        Account account = AccountFactory.createAccount(amount);
+        //Valida se o irá lançar a exceção
+        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            account.withdraw(500.00);
+        });
+        //Verifica se o saldo permaneceu o mesmo
+        Assertions.assertEquals(expectedValue, account.getBalance());
     }
 }
